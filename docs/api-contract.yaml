@@ -1,0 +1,118 @@
+openapi: "3.0.3"
+info:
+  title: AI Team Project API
+  description: |
+    由 Architect Agent 生成和维护的 API 契约文档。
+    前后端 Agent 均基于此契约开发，QA Agent 基于此契约验证。
+  version: "1.0.0"
+  contact:
+    name: Architect Agent
+
+servers:
+  - url: http://localhost:3000/api/v1
+    description: 本地开发环境
+  - url: https://staging.example.com/api/v1
+    description: 预发环境
+  - url: https://api.example.com/api/v1
+    description: 生产环境
+
+tags:
+  - name: Auth
+    description: 认证相关接口
+  - name: Users
+    description: 用户管理接口
+
+paths:
+  # 由 Architect Agent 根据架构设计填充
+  # 示例：
+  # /auth/login:
+  #   post:
+  #     summary: 用户登录
+  #     tags: [Auth]
+  #     requestBody:
+  #       required: true
+  #       content:
+  #         application/json:
+  #           schema:
+  #             $ref: '#/components/schemas/LoginRequest'
+  #     responses:
+  #       '200':
+  #         description: 登录成功
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: '#/components/schemas/LoginResponse'
+  #       '401':
+  #         $ref: '#/components/responses/Unauthorized'
+
+components:
+  schemas:
+    # 由 Architect Agent 根据数据模型填充
+    Error:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: integer
+          description: 业务错误码
+          example: 40001
+        message:
+          type: string
+          description: 错误描述
+          example: "参数验证失败"
+        details:
+          type: object
+          description: 可选的详细信息
+
+  responses:
+    BadRequest:
+      description: 请求参数错误
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            code: 40000
+            message: "请求参数错误"
+
+    Unauthorized:
+      description: 未认证
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            code: 40100
+            message: "未认证，请先登录"
+
+    Forbidden:
+      description: 无权限
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            code: 40300
+            message: "无权限访问该资源"
+
+    NotFound:
+      description: 资源不存在
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            code: 40400
+            message: "请求的资源不存在"
+
+    InternalError:
+      description: 服务器内部错误
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            code: 50000
+            message: "服务器内部错误"
